@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar i-novus-test.jar
+java -jar i-novus-test.war

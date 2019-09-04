@@ -14,6 +14,7 @@
     <name>i-novus-test</name>
     <description>Job test</description>
 
+    <packaging>war</packaging>
     <properties>
         <docker.image.name>sanekesv/i-novus-test</docker.image.name>
         <docker.image.tag>tag</docker.image.tag>
@@ -86,10 +87,15 @@
             <version>3.4.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <finalName>i-niovus-test</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -105,8 +111,15 @@
     </build>
     <profiles>
         <profile>
+            <id>tomcat-build</id>
+            <build>
+                <finalName>ROOT</finalName>
+            </build>
+        </profile>
+        <profile>
             <id>docker-build</id>
             <build>
+                <finalName>i-niovus-test</finalName>
                 <plugins>
                     <plugin>
                         <groupId>com.spotify</groupId>
