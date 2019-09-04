@@ -1,0 +1,22 @@
+version: '3'
+services:
+  eurekaserver:
+    image: sanekesv/eureka:tag
+    ports:
+    - "8761:8761"
+  backendserver:
+    image: sanekesv/backend:tag
+    ports:
+    - "8081:8081"
+    environment:
+      EUREKASERVER_PORT: "8761"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+  frontendserver:
+    image: sanekesv/frontend:tag
+    ports:
+    - "8080:8080"
+    environment:
+      DATABASESERVER_PORT: "5432"
+      BACKENDSERVER_PORT: "8081"
+      EUREKASERVER_PORT: "8761"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"

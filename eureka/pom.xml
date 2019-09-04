@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eureka</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>eureka</name>
+
+    <parent>
+        <groupId>ru.sanekesv</groupId>
+        <artifactId>i-novus-test</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <docker.image.name>sanekesv/eureka</docker.image.name>
+        <docker.image.tag>tag</docker.image.tag>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>eureka</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>docker-build</id>
+            <build>
+                <finalName>eureka</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>1.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>remove-image</id>
+                                <goals>
+                                    <goal>removeImage</goal>
+                                </goals>
+                                <configuration>
+                                    <imageName>${docker.image.name}</imageName>
+                                    <imageTags>
+                                        <imageTag>${docker.image.tag}</imageTag>
+                                    </imageTags>
+                                </configuration>
+                                <phase>clean</phase>
+                            </execution>
+                            <execution>
+                                <id>build-image</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>${docker.image.name}:${docker.image.tag}</imageName>
+                            <dockerDirectory>${project.basedir}</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.build.directory}</directory>
+                                    <include>${project.build.finalName}.jar</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
