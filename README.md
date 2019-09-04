@@ -9,7 +9,7 @@
 
 ```
 Выполнить команду 
-mvn clean && mvn install -P tomcat-build
+./mvnw clean && ./mvnw install -P tomcat-build
 Скопировать target/ROOT.war в %TOMCAT_HOME%/webapps/
 ``` 
 
